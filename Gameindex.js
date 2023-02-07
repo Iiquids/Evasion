@@ -20,11 +20,6 @@ var settings = {
     "PlayerColors": ["red", "green", "blue"]
 }
 
-var pla1 = canvas.getContext("2d")
-var pla2 = canvas.getContext("2d")
-
-var playersInCanvas = {"Player1": {"Name": "Player" + i, "Color": settings.PlayerColors[0], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": startx, "PosY": starty}, "Player2": {"Name": "Player" + i, "Color": settings.PlayerColors[1], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": startx, "PosY": starty}}
-
 var resize = function() {
     width = settings.PlayerSize[0]
     height = settings.PlayerSize[1]
@@ -36,8 +31,15 @@ resize()
 
 //Make background and sutff
 
-var startx = canvas.width / 2
-var starty = canvas.height / 2
+var pla1 = canvas.getContext("2d")
+var pla2 = canvas.getContext("2d")
+
+var playersInCanvas = {
+    "Player1": {"Color": settings.PlayerColors[0], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": canvas.width / 2, "PosY": canvas.height / 2},
+    "Player2": {"Color": settings.PlayerColors[1], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": canvas.width / 2, "PosY": canvas.height / 2}
+}
+pla1.fillStyle = playersInCanvas.Player1.Color;
+pla2.fillStyle = playersInCanvas.Player2.Color;
 
 var state = {
     x: (width / 2),
@@ -53,29 +55,27 @@ function update(progress) {
 
 function movePlayer() {
     if (keysDown.W == true) {
-        starty = starty - settings.PlayerSpeed;
+        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed;
     }
     if (keysDown.A == true) {
-        startx = startx - settings.PlayerSpeed;
+        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
     }
     if (keysDown.S == true) {
-        starty = starty + settings.PlayerSpeed;
+        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed;
     }
     if (keysDown.D == true) {
-        startx = startx + settings.PlayerSpeed;
+        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
     }
 }
 
 function loadPlayers() {
     //Player 1 Design
-    pla1.fillStyle = i.Color;
-    pla1.clearRect(0, 0, objectInCanvas[0].Width, objectInCanvas[0].Height)
-    pla1.fillRect(objectInCanvas[0].PosX, objectInCanvas[0].PosY, 20, 20)
+    pla1.clearRect(0, 0, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height)
+    pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, 20, 20)
 
     //Player 2 Design
-    pla2.fillStyle = objectInCanvas[1].Color;
-    pla2.clearRect(0, 0, objectInCanvas[1].Width, objectInCanvas[1].Height)
-    pla2.fillRect(i.PosX, objectInCanvas[1].PosY, 20, 20)
+    //pla2.clearRect(0, 0, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height)
+    //pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, 20, 20)
 }
 
 function draw() {
