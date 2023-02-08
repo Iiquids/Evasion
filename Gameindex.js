@@ -149,9 +149,9 @@ function loadPlayers() { // Loads and draws Players.
 var startText = canvas.getContext("2d");
 function draw() {
     if (settings.started == false) {
-        startText.font = "30px Arial";
-        startText.Color = "White";
-        startText.fillText("Press W or Arrow To Start", canvas.width/4 + 90, canvas.height/2, canvas.width/4);
+        startText.font ="bold 96px Helvetica, Arial, sans-serif";
+        startText.fillStyle = "black";
+        startText.fillText("Press W and Arrow To Start", canvas.width/4 + 90, canvas.height/2, canvas.width/4);
     } else {
         loadPlayers();
     }
