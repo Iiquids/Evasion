@@ -37,21 +37,20 @@ if (randomGenNumberForKeyTurnOn == 4) {
     keysDown.Right = true;
 }
 
+canvas.height = 1000;
+canvas.width = 1000;
+
 var settings = {
     "PlayerSpeed": 10,
-    "PlayerSize": [window.innerWidth * 2, window.innerHeight * 2],
+    "PlayerSize": [window.innerHeight * 2, window.innerHeight * 2],
     "Players": 1,
     "PlayerColors": ["red", "green", "blue"]
 }
 
-var resize = function() {
-    width = settings.PlayerSize[0]
-    height = settings.PlayerSize[1]
-    canvas.width = width
-    canvas.height = height
+var frameSettings = {
+    "Width": 400,
+    "Height": 400
 }
-window.onresize = resize
-resize()
 
 //Make background and sutff
 
@@ -64,6 +63,9 @@ var playersInCanvas = {
 }
 pla1.fillStyle = playersInCanvas.Player1.Color;
 pla2.fillStyle = playersInCanvas.Player2.Color;
+
+
+
 
 var state = {
     x: (width / 2),
@@ -136,19 +138,31 @@ function movePlayer() {
     }
 }
 
+var exmapleNode = canvas.getContext("2d");
+exmapleNode.fillStyle = playersInCanvas.Player1.Color;
+
 function loadPlayers() { // Loads and draws Players.
     // clearRect First else dumbass thing won't work
-    // Brian probably coded this dumb clearRect Thing cause its mad annyoing.... -_- UwU
+    // Bryan probably coded this dumb clearRect Thing cause its mad annyoing.... -_- UwU
 
     pla2.clearRect(0, 0, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
     pla1.clearRect(0, 0, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
+    exmapleNode.clearRect(0, 0, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height); // EXMAPLE
 
     pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, 20, 20);
     pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, 20, 20);
+    exmapleNode.fillRect(0, pla1.Width, 20, 20); // EXMAPLE
 }
 
 function draw() {
-    loadPlayers()
+    loadPlayers();
+}
+
+function checkTagged() {
+    getSize1 = {"w": playersInCanvas.Player1.Width, "h": playersInCanvas.Player1.Height};
+    getSize2 = {"w": playersInCanvas.Player2.Width, "h": playersInCanvas.Player2.Height};
+
+
 }
 
 function loop(timestamp) {
@@ -157,6 +171,7 @@ function loop(timestamp) {
     update(progress)
     draw()
     movePlayer()
+    //checkTagged()
 
     lastRender = timestamp
     window.requestAnimationFrame(loop)
