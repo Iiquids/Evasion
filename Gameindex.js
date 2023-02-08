@@ -121,14 +121,13 @@ function movePlayer() {
         }
     }
     if (keysDown.Down == true) {
-        if (playersInCanvas.Player2.PosY + settings.PlayerSpeed <= canvas.height) {
+        if (playersInCanvas.Player2.PosY + settings.PlayerSpeed <= canvas.height-17) {
             playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed;
         } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed >= canvas.height - 17) {
             playersInCanvas.Player2.PosY = canvas.height - 17;
         }
     }
     if (keysDown.Right == true) {
-        //playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
         if (playersInCanvas.Player2.PosX + settings.PlayerSpeed <= canvas.width-17) {
             playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
         } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed >= canvas.width-17) {
