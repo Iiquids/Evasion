@@ -42,7 +42,7 @@ canvas.width = 1000;
 
 var settings = {
     "PlayerSpeed": 10,
-    "PlayerSize": [30, (30)*2],
+    "PlayerSize": [25, (25)*2],
     "Players": 1,
     "PlayerColors": ["red", "green", "blue"]
 }
@@ -61,7 +61,7 @@ var playersInCanvas = {
     "Player1": {"Color": settings.PlayerColors[0], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": canvas.width / 2, "PosY": canvas.height / 2},
     "Player2": {"Color": settings.PlayerColors[1], "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": canvas.width / 2, "PosY": canvas.height / 2}
 }
-pla1.fillStyle = playersInCanvas.Player1.Color;
+//pla1.fillStyle = playersInCanvas.Player1.Color;
 pla2.fillStyle = playersInCanvas.Player2.Color;
 
 
@@ -140,8 +140,8 @@ function loadPlayers() { // Loads and draws Players.
     // clearRect First else dumbass thing won't work
     // Bryan probably coded this dumb clearRect Thing cause its mad annyoing.... -_- UwU
 
-    pla2.clearRect(0, 0, canvas.width, canvas.height);
-    pla1.clearRect(0, 0, canvas.width, canvas.height);
+     pla2.clearRect(0, 0, canvas.width, canvas.height);
+     pla1.clearRect(0, 0, canvas.width, canvas.height);
 
     pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
     pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
@@ -151,10 +151,21 @@ function draw() {
     loadPlayers();
 }
 
-function checkTagged() {
-    getSize1 = {"w": playersInCanvas.Player1.Width, "h": playersInCanvas.Player1.Height};
-    getSize2 = {"w": playersInCanvas.Player2.Width, "h": playersInCanvas.Player2.Height};
+function isCollide(a, b) {
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
+}
 
+function checkTagged() {
+    var player = {"x": playersInCanvas.Player1.PosX, "y": playersInCanvas.Player1.PosY, "height": playersInCanvas.Player1.Height, "width": playersInCanvas.Player1.Width};
+    var player2 = {"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY, "height": playersInCanvas.Player2.Height, "width": playersInCanvas.Player2.Width};
+    if (isCollide(player, player2) == true) {
+        alert("Touched");
+    }
 }
 
 function loop(timestamp) {
@@ -163,7 +174,7 @@ function loop(timestamp) {
     update(progress)
     draw()
     movePlayer()
-    //checkTagged()
+    checkTagged()
 
     lastRender = timestamp
     window.requestAnimationFrame(loop)
@@ -210,3 +221,9 @@ document.addEventListener('keydown', function(event) {
 
 var lastRender = 0
 window.requestAnimationFrame(loop)
+
+const fireFunction = () => {
+    alert("edin bad");
+}
+
+fireFunction();
