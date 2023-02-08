@@ -16,7 +16,6 @@ var keysDown = {
 // Turns one of the keys On randomly
 //Math.floor(Math.random() * 5)
 var randomGenNumberForKeyTurnOn = Math.floor(Math.random() * 4)
-
 if (randomGenNumberForKeyTurnOn == 0) {
     keysDown.W = true;
 } else if (randomGenNumberForKeyTurnOn == 1) {
@@ -39,7 +38,7 @@ if (randomGenNumberForKeyTurnOn == 4) {
 }
 
 var settings = {
-    "PlayerSpeed": 3,
+    "PlayerSpeed": 10,
     "PlayerSize": [window.innerWidth * 2, window.innerHeight * 2],
     "Players": 1,
     "PlayerColors": ["red", "green", "blue"]
@@ -80,28 +79,60 @@ function update(progress) {
 
 function movePlayer() {
     if (keysDown.W == true) {
-        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed;
+        if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed) >= 0) {
+            playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player1.PosY = 0;
+        }
     }
     if (keysDown.A == true) {
-        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
+        if (playersInCanvas.Player1.PosX - settings.PlayerSpeed >= 0) {
+            playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player1.PosX = 0;
+        }
     }
     if (keysDown.S == true) {
-        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed;
+        if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed) <= canvas.height - 17) {
+            playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed >= canvas.height - 17) {
+            playersInCanvas.Player1.PosY = canvas.height - 17;
+        }
     }
     if (keysDown.D == true) {
-        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
+        if (playersInCanvas.Player1.PosX + settings.PlayerSpeed <= canvas.width-17) {
+            playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosX + settings.PlayerSpeed >= canvas.width-17) {
+            playersInCanvas.Player1.PosX = canvas.width-17;
+        }
     }
     if (keysDown.Up == true) {
-        playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed;
+        if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed) >= 0) {
+            playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed;
+        } else if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed) <= 0) {
+            playersInCanvas.Player2.PosY = 0;
+        }
     }
     if (keysDown.Left == true) {
-        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed;
+        if (playersInCanvas.Player2.PosX - settings.PlayerSpeed >= 0) {
+            playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosX - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player2.PosX = 0
+        }
     }
     if (keysDown.Down == true) {
-        playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed;
+        if (playersInCanvas.Player2.PosY + settings.PlayerSpeed <= canvas.height-17) {
+            playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed >= canvas.height - 17) {
+            playersInCanvas.Player2.PosY = canvas.height - 17;
+        }
     }
     if (keysDown.Right == true) {
-        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+        if (playersInCanvas.Player2.PosX + settings.PlayerSpeed <= canvas.width-17) {
+            playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed >= canvas.width-17) {
+            playersInCanvas.Player2.PosX = canvas.width-17;
+        }
     }
 }
 
@@ -158,13 +189,13 @@ document.addEventListener('keydown', function(event) {
         moveDirection("S", 1);
     } else if (event.code === 'KeyD') {
         moveDirection("D", 1);
-    } else if (event.code == 'KeyI') {
+    } else if (event.code == 'ArrowUp') {
         moveDirection("Up", 2);
-    } else if (event.code === 'KeyJ') {
+    } else if (event.code === 'ArrowLeft') {
         moveDirection("Left", 2);
-    } else if (event.code === "KeyK") {
+    } else if (event.code === "ArrowDown") {
         moveDirection("Down", 2);
-    } else if (event.code === "KeyL") {
+    } else if (event.code === "ArrowRight") {
         moveDirection("Right", 2);
     }
 });
