@@ -3,7 +3,7 @@ var width
 var height
 
 var keysDown = {
-    "W": true,
+    "W": false,
     "A": false,
     "S": false,
     "D": false,
@@ -13,8 +13,32 @@ var keysDown = {
     "Right": false
 }
 
+// Turns one of the keys On randomly
+//Math.floor(Math.random() * 5)
+var randomGenNumberForKeyTurnOn = Math.floor(Math.random() * 4)
+if (randomGenNumberForKeyTurnOn == 0) {
+    keysDown.W = true;
+} else if (randomGenNumberForKeyTurnOn == 1) {
+    keysDown.A = true;
+} else if (randomGenNumberForKeyTurnOn == 2) {
+    keysDown.S = true;
+} else if (randomGenNumberForKeyTurnOn == 3) {
+    keysDown.D = true;
+}
+
+randomGenNumberForKeyTurnOn = Math.floor((Math.random() * 4)+4)
+if (randomGenNumberForKeyTurnOn == 4) {
+    keysDown.Up = true;
+} else if (randomGenNumberForKeyTurnOn == 5) {
+    keysDown.Left = true;
+} else if (randomGenNumberForKeyTurnOn == 6) {
+    keysDown.Down = true;
+} else if (randomGenNumberForKeyTurnOn == 7) {
+    keysDown.Right = true;
+}
+
 var settings = {
-    "PlayerSpeed": 3,
+    "PlayerSpeed": 10,
     "PlayerSize": [window.innerWidth * 2, window.innerHeight * 2],
     "Players": 1,
     "PlayerColors": ["red", "green", "blue"]
@@ -55,27 +79,57 @@ function update(progress) {
 
 function movePlayer() {
     if (keysDown.W == true) {
-        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed;
+        if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed) >= 0) {
+            playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player1.PosY = 0;
+        }
     }
     if (keysDown.A == true) {
-        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
+        //playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
+        if (playersInCanvas.Player1.PosX - settings.PlayerSpeed)
     }
     if (keysDown.S == true) {
-        playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed;
+        if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed) <= canvas.height - 17) {
+            playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed >= canvas.height - 17) {
+            playersInCanvas.Player1.PosY = canvas.height - 17;
+        }
     }
     if (keysDown.D == true) {
         playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
     }
+    if (keysDown.Up == true) {
+        if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed) >= 0) {
+            playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed;
+        } else if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed) <= 0) {
+            playersInCanvas.Player2.PosY = 0;
+        }
+    }
+    if (keysDown.Left == true) {
+        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed;
+    }
+    if (keysDown.Down == true) {
+        if (playersInCanvas.Player2.PosY + settings.PlayerSpeed <= canvas.height) {
+            playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed >= canvas.height) {
+            playersInCanvas.Player2.PosY = canvas.height - 17
+        }
+    }
+    if (keysDown.Right == true) {
+        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+    }
 }
 
-function loadPlayers() {
-    //Player 1 Design
-    pla1.clearRect(0, 0, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height)
-    pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, 20, 20)
+function loadPlayers() { // Loads and draws Players.
+    // clearRect First else dumbass thing won't work
+    // Brian probably coded this dumb clearRect Thing cause its mad annyoing.... -_- UwU
 
-    //Player 2 Design
-    //pla2.clearRect(0, 0, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height)
-    //pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, 20, 20)
+    pla2.clearRect(0, 0, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
+    pla1.clearRect(0, 0, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
+
+    pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, 20, 20);
+    pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, 20, 20);
 }
 
 function draw() {
@@ -116,12 +170,18 @@ document.addEventListener('keydown', function(event) {
         moveDirection("W", 1);
     } else if (event.code === 'KeyA') {
         moveDirection("A", 1);
-    } else if (event.code === 'KeyS'){
+    } else if (event.code === 'KeyS') {
         moveDirection("S", 1);
-    } else if (event.code === 'KeyD'){
-        moveDirection("D", 1)
-    } else if (event.code === 'KeyP'){
-        moveDirection("S", 2)
+    } else if (event.code === 'KeyD') {
+        moveDirection("D", 1);
+    } else if (event.code == 'KeyI') {
+        moveDirection("Up", 2);
+    } else if (event.code === 'KeyJ') {
+        moveDirection("Left", 2);
+    } else if (event.code === "KeyK") {
+        moveDirection("Down", 2);
+    } else if (event.code === "KeyL") {
+        moveDirection("Right", 2);
     }
 });
 // End Of Movement
