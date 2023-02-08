@@ -86,8 +86,11 @@ function movePlayer() {
         }
     }
     if (keysDown.A == true) {
-        //playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
-        if (playersInCanvas.Player1.PosX - settings.PlayerSpeed)
+        if (playersInCanvas.Player1.PosX - settings.PlayerSpeed >= 0) {
+            playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player1.PosX = 0;
+        }
     }
     if (keysDown.S == true) {
         if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed) <= canvas.height - 17) {
@@ -97,7 +100,11 @@ function movePlayer() {
         }
     }
     if (keysDown.D == true) {
-        playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
+        if (playersInCanvas.Player1.PosX + settings.PlayerSpeed <= canvas.width-17) {
+            playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player1.PosX + settings.PlayerSpeed >= canvas.width-17) {
+            playersInCanvas.Player1.PosX = canvas.width-17;
+        }
     }
     if (keysDown.Up == true) {
         if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed) >= 0) {
@@ -107,17 +114,26 @@ function movePlayer() {
         }
     }
     if (keysDown.Left == true) {
-        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed;
+        if (playersInCanvas.Player2.PosX - settings.PlayerSpeed >= 0) {
+            playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosX - settings.PlayerSpeed <= 0) {
+            playersInCanvas.Player2.PosX = 0
+        }
     }
     if (keysDown.Down == true) {
         if (playersInCanvas.Player2.PosY + settings.PlayerSpeed <= canvas.height) {
             playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed;
-        } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed >= canvas.height) {
-            playersInCanvas.Player2.PosY = canvas.height - 17
+        } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed >= canvas.height - 17) {
+            playersInCanvas.Player2.PosY = canvas.height - 17;
         }
     }
     if (keysDown.Right == true) {
-        playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+        //playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+        if (playersInCanvas.Player2.PosX + settings.PlayerSpeed <= canvas.width-17) {
+            playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed;
+        } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed >= canvas.width-17) {
+            playersInCanvas.Player2.PosX = canvas.width-17;
+        }
     }
 }
 
@@ -174,13 +190,13 @@ document.addEventListener('keydown', function(event) {
         moveDirection("S", 1);
     } else if (event.code === 'KeyD') {
         moveDirection("D", 1);
-    } else if (event.code == 'KeyI') {
+    } else if (event.code == 'ArrowUp') {
         moveDirection("Up", 2);
-    } else if (event.code === 'KeyJ') {
+    } else if (event.code === 'ArrowLeft') {
         moveDirection("Left", 2);
-    } else if (event.code === "KeyK") {
+    } else if (event.code === "ArrowDown") {
         moveDirection("Down", 2);
-    } else if (event.code === "KeyL") {
+    } else if (event.code === "ArrowRight") {
         moveDirection("Right", 2);
     }
 });
