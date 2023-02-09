@@ -39,14 +39,14 @@ if (randomGenNumberForKeyTurnOn == 4) {
     keysDown.Right = true;
 }
 
-canvas.height = 1500;
-canvas.width = 1500;
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 
 var settings = {
     "started": false,
     "PlayerSpeed": {"x" : 5, "y": 5},
-    "PlayerSize": [10, (10)*2],
-    "CoinSize": [20, (20)*2],
+    "PlayerSize": [20, 20],
+    "CoinSize": [25, 25],
     "Players": 1,
     "PlayerAvaColors": {"Cop": "blue", "Robber": "Red"},
     "playerColors": {"Player1": "blue", "Player2": "blue"},
@@ -173,7 +173,7 @@ function draw() {
     if (settings.started == false) {
         if (settings.playerCollided == false) {
             startText.fillStyle = "black";
-            startText.fillText("Press W and Arrow Up To Start", canvas.width/4 + 90, canvas.height/2, canvas.width/4);
+            startText.fillText("Press W and Arrow Up To Start " + window.innerHeight + ", " + window.innerWidth, canvas.width/4 + 90, canvas.height/2, canvas.width/4);
         } else {
             startText.fillStyle = "black";
             startText.fillText("Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Start.", canvas.width/4 + 90, canvas.height/2, canvas.width/4);
