@@ -82,15 +82,33 @@ var pla2 = canvas.getContext("2d");
 var canvasWalls = [];
 
 for (let i = 0; i < 10 * settingsLevel; i++) {
+    let x = 0
+    let y = 0
+    let width = 0
+    let height = 0
     if (eventOrNot(i)) {
         //Facing Down
+        height = Math.floor(Math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMinLong) + settings.canvas.wallMinLong;
+        width = Math.floor(math.random() * settings.canvas.wallMinLong)
+
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+
     } else {
         //Facing Sideways
+        height = Math.floor(Math.random()* settings.canvas.wallMinLong);
+        width = Math.floor(math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMaxLong) + settings.canvas.wallMinLong;
+
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
     }
     canvasWalls.push({
         "wall": canvas.getContext("2d"),
-        "x": Math.floor((Math.random() * settings.canvas.wallMinLong) + settings.canvas),
-        "y": ""});
+        "x": x,
+        "y": y,
+        "width": width,
+        "height": height
+    });
 }
 
 var playersInCanvas = {
@@ -189,6 +207,20 @@ function loadPlayers() { // Loads and draws Players.
     pla2.fillStyle = settings.playerColors.Player2;
 }
 
+function loadWalls() {
+    for (let i = 0; i < 10 * canvasWalls.length; i++) {
+        // Draw
+        let ctx = canvasWalls[i].wall;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    for (let i = 0; i < 10 * canvasWalls.length; i++) {
+        // Draw
+        let ctx = canvasWalls[i].wall;
+        ctx.fillRect(canvasWalls[i].x, canvasWalls[i].y, canvasWalls[i].width, canvasWalls[i].height);
+        ctx.fillStyle = "white";
+    }
+}
+
 
 var startText = canvas.getContext("2d");
 startText.font ="bold 96px Helvetica, Arial, sans-serif";
@@ -205,6 +237,7 @@ function draw() {
     } else {
         if (settings.playerCollided == false) {
             loadPlayers();
+            loadWalls();
         }
     }
 }
