@@ -82,26 +82,20 @@ var pla2 = canvas.getContext("2d");
 var canvasWalls = [];
 
 for (let i = 0; i < 10 * settings.Level; i++) {
-    let x = 0
-    let y = 0
     let width = 0
     let height = 0
+
     if (eventOrNot(i)) {
-        //Facing Down
-        height = Math.floor(Math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMinLong) + settings.canvas.wallMinLong;
-        width = Math.floor(Math.random() * settings.canvas.wallMinLong)
-
-        x = Math.floor(Math.random() * window.innerWidth);
-        y = Math.floor(Math.random() * window.innerHeight);
-
+        width = 30;
+        height = 90;
     } else {
-        //Facing Sideways
-        height = Math.floor(Math.random()* settings.canvas.wallMinLong);
-        width = Math.floor(Math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMaxLong) + settings.canvas.wallMinLong;
-
-        x = Math.floor(Math.random() * window.innerWidth);
-        y = Math.floor(Math.random() * window.innerHeight);
+        width = 90;
+        height = 30;
     }
+
+    let x = Math.floor(Math.random() * canvas.width) - width;
+    let y = Math.floor(Math.random() * canvas.height) - height;
+
     canvasWalls.push({
         "wall": canvas.getContext("2d"),
         "x": x,
@@ -129,69 +123,102 @@ function update(progress) {
     }
 }
 
+function isCollide(a, b) {
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
+}
+
+function wallCollide(a) {
+    for (let i = 0; i < canvasWalls.length; i++) {
+        if (isCollide(a, {"x": canvasWalls[i].x, "y": canvasWalls[i].y, "width": canvasWalls[i].width, "height": canvasWalls[i].height})){
+            return false;
+        }
+    }
+    return true;
+}
+
 var widthDelay = canvas.width - canvas.height;
 
 function movePlayer() {
     if (settings.started == true) {
         if (keysDown.W == true) {
-            if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed.y) >= 0) {
+            if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed.y) >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY - settings.PlayerSpeed.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
                 playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed.y <= 0) {
                 playersInCanvas.Player1.PosY = 0;
+            } else {
+                keysDown.W = false;
             }
         }
         if (keysDown.A == true) {
-            if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x >= 0) {
+            if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX - settings.PlayerSpeed.x + settings.PlayerSpeed.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
                 playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x <= 0) {
                 playersInCanvas.Player1.PosX = 0;
+            } else {
+                keysDown.A = false;
             }
         }
         if (keysDown.S == true) {
-            if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed.y) <= canvas.height - settings.PlayerSize[1]) {
+            if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed.y) <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY + settings.PlayerSpeed.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
                 playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player1.PosY = canvas.height - settings.PlayerSize[1];
+            } else {
+                keysDown.S = false;
             }
         }
         if (keysDown.D == true) {
-            if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0]) {
+            if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player1.PosX + settings.PlayerSpeed.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
                 playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player1.PosX = canvas.width - settings.PlayerSize[0];
+            } else {
+                keysDown.D = false;
             }
         }
         if (keysDown.Up == true) {
-            if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed.y) >= 0) {
+            if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed.y)  >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX, "y": (playersInCanvas.Player2.PosY - settings.PlayerSpeed.y), "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height}) >= 0) {
                 playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed.y;
             } else if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed.y) <= 0) {
                 playersInCanvas.Player2.PosY = 0;
+            } else {
+                keysDown.Up = false;
             }
         }
         if (keysDown.Left == true) {
-            if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x >= 0) {
+            if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX - settings.PlayerSpeed.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
                 playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x <= 0) {
                 playersInCanvas.Player2.PosX = 0
+            } else {
+                keysDown.Left = false;
             }
         }
         if (keysDown.Down == true) {
-            if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y <= canvas.height - settings.PlayerSize[1]) {
+            if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY + settings.PlayerSpeed.y, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
                 playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player2.PosY = canvas.height - settings.PlayerSize[1];
+            } else {
+                keysDown.Down = false;
             }
         }
         if (keysDown.Right == true) {
-            if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0]) {
+            if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player2.PosX + settings.PlayerSpeed.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
                 playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player2.PosX = canvas.width - settings.PlayerSize[0];
+            } else {
+                keysDown.Right = false;
             }
         }
     }
 }
-
 
 function loadPlayers() { // Loads and draws Players.
     // clearRect First else dumbass thing won't work
@@ -200,30 +227,31 @@ function loadPlayers() { // Loads and draws Players.
     pla2.clearRect(0, 0, canvas.width, canvas.height);
     pla1.clearRect(0, 0, canvas.width, canvas.height);
 
-    pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
-    pla1.fillStyle = settings.playerColors.Player1;
-
-    pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
-    pla2.fillStyle = settings.playerColors.Player2;
-}
-
-function loadWalls() {
-    for (let i = 0; i < 10 * canvasWalls.length; i++) {
+    for (let i = 0; i < canvasWalls.length; i++) {
         // Draw
-        let ctx = canvasWalls[i].wall;
+        var ctx = canvasWalls[i].wall;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    for (let i = 0; i < 10 * canvasWalls.length; i++) {
+    };
+
+    for (let i = 0; i < canvasWalls.length; i++) {
         // Draw
-        let ctx = canvasWalls[i].wall;
-        ctx.fillRect(canvasWalls[i].x, canvasWalls[i].y, canvasWalls[i].width, canvasWalls[i].height);
+        var ctx = canvasWalls[i].wall;
         ctx.fillStyle = "white";
-    }
-}
+        ctx.fillRect(canvasWalls[i].x, canvasWalls[i].y, canvasWalls[i].width, canvasWalls[i].height);
+
+    };
+
+    // Colors is soo fucking shit, LIKE LOOK AT THIS... PLAYER2 IS USING PLAYER1'S COLOR AND IT USES OPPISITE... Another thing Bryan coded that shit.
+
+    pla2.fillStyle = settings.playerColors.Player1;
+    pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
+
+    pla1.fillStyle = settings.playerColors.Player2;
+    pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
+};
 
 
 var startText = canvas.getContext("2d");
-
 startText.font ="bold " + canvas.width/30 + "px Helvetica, Arial, sans-serif";
 
 function draw() {
@@ -235,25 +263,15 @@ function draw() {
             startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
         } else {
             startText.fillStyle = "black";
-            let text = "Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Start.";
+            let text = "Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Restart.";
             let textWidth = startText.measureText(text).width;
             startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
         }
     } else {
         if (settings.playerCollided == false) {
             loadPlayers();
-            //loadWalls();
         }
     }
-}
-
-function isCollide(a, b) {
-    return !(
-        ((a.y + a.height) < (b.y)) ||
-        (a.y > (b.y + b.height)) ||
-        ((a.x + a.width) < b.x) ||
-        (a.x > (b.x + b.width))
-    );
 }
 
 function checkTagged() {
