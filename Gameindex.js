@@ -81,7 +81,7 @@ var pla2 = canvas.getContext("2d");
 
 var canvasWalls = [];
 
-for (let i = 0; i < 10 * settingsLevel; i++) {
+for (let i = 0; i < 10 * settings.Level; i++) {
     let x = 0
     let y = 0
     let width = 0
@@ -89,7 +89,7 @@ for (let i = 0; i < 10 * settingsLevel; i++) {
     if (eventOrNot(i)) {
         //Facing Down
         height = Math.floor(Math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMinLong) + settings.canvas.wallMinLong;
-        width = Math.floor(math.random() * settings.canvas.wallMinLong)
+        width = Math.floor(Math.random() * settings.canvas.wallMinLong)
 
         x = Math.floor(Math.random() * window.innerWidth);
         y = Math.floor(Math.random() * window.innerHeight);
@@ -97,7 +97,7 @@ for (let i = 0; i < 10 * settingsLevel; i++) {
     } else {
         //Facing Sideways
         height = Math.floor(Math.random()* settings.canvas.wallMinLong);
-        width = Math.floor(math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMaxLong) + settings.canvas.wallMinLong;
+        width = Math.floor(Math.random() * settings.canvas.wallMaxLong - settings.canvas.wallMaxLong) + settings.canvas.wallMinLong;
 
         x = Math.floor(Math.random() * window.innerWidth);
         y = Math.floor(Math.random() * window.innerHeight);
@@ -223,21 +223,26 @@ function loadWalls() {
 
 
 var startText = canvas.getContext("2d");
-startText.font ="bold 96px Helvetica, Arial, sans-serif";
+
+startText.font ="bold " + canvas.width/30 + "px Helvetica, Arial, sans-serif";
 
 function draw() {
     if (settings.started == false) {
         if (settings.playerCollided == false) {
             startText.fillStyle = "black";
-            startText.fillText("Press W and Arrow Up To Start " + window.innerHeight + ", " + window.innerWidth, canvas.width/4 + 90, canvas.height/2, canvas.width/4);
+            let text = "Press W and Arrow Up To Start"
+            let textWidth = startText.measureText(text).width;
+            startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
         } else {
             startText.fillStyle = "black";
-            startText.fillText("Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Start.", canvas.width/4 + 90, canvas.height/2, canvas.width/4);
+            let text = "Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Start.";
+            let textWidth = startText.measureText(text).width;
+            startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
         }
     } else {
         if (settings.playerCollided == false) {
             loadPlayers();
-            loadWalls();
+            //loadWalls();
         }
     }
 }
