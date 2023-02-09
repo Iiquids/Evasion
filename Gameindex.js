@@ -51,18 +51,27 @@ var settings = {
     "PlayerAvaColors": {"Cop": "blue", "Robber": "Red"},
     "playerColors": {"Player1": "blue", "Player2": "blue"},
     "PlayerTurn": Math.floor(Math.random() * 2) + 1,
-    "playerCollided": false
-}
+    "playerCollided": false,
+    "Level": 1,
+    "canvas": {"wallMaxLong": 90, "wallMinLong": 40}
+};
 
 var PlayerStartXY = {
     "Player1": {"x": settings.PlayerSize[0] * 3, "y": canvas.height / 2},
     "Player2": {"x": canvas.width - settings.PlayerSize[0] * 3, "y": canvas.height / 2}
-}
+};
 
 if (settings.PlayerTurn == 1) {
     settings.playerColors.Player1 = settings.PlayerAvaColors.Robber
 } else {
     settings.playerColors.Player2 = settings.PlayerAvaColors.Robber
+};
+
+function eventOrNot(n){
+    if(n % 2==0){
+        return true;
+    }
+    return false;
 }
 
 //Make background and sutff
@@ -70,10 +79,24 @@ if (settings.PlayerTurn == 1) {
 var pla1 = canvas.getContext("2d");
 var pla2 = canvas.getContext("2d");
 
+var canvasWalls = [];
+
+for (let i = 0; i < 10 * settingsLevel; i++) {
+    if (eventOrNot(i)) {
+        //Facing Down
+    } else {
+        //Facing Sideways
+    }
+    canvasWalls.push({
+        "wall": canvas.getContext("2d"),
+        "x": Math.floor((Math.random() * settings.canvas.wallMinLong) + settings.canvas),
+        "y": ""});
+}
+
 var playersInCanvas = {
     "Player1": {"Color": settings.playerColors.Player1, "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": PlayerStartXY.Player1.x, "PosY": PlayerStartXY.Player1.x},
     "Player2": {"Color": settings.playerColors.Player2, "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": PlayerStartXY.Player2.x, "PosY": PlayerStartXY.Player2.y}
-}
+};
 
 
 var state = {
@@ -161,6 +184,7 @@ function loadPlayers() { // Loads and draws Players.
 
     pla1.fillRect(playersInCanvas.Player1.PosX, playersInCanvas.Player1.PosY, playersInCanvas.Player1.Width, playersInCanvas.Player1.Height);
     pla1.fillStyle = settings.playerColors.Player1;
+
     pla2.fillRect(playersInCanvas.Player2.PosX, playersInCanvas.Player2.PosY, playersInCanvas.Player2.Width, playersInCanvas.Player2.Height);
     pla2.fillStyle = settings.playerColors.Player2;
 }
