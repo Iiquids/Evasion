@@ -53,8 +53,7 @@ var settings = {
     "PlayerTurn": Math.floor(Math.random() * 2) + 1,
     "playerCollided": false,
     "Level": 1,
-    "canvas": {"wallMaxLong": 90, "wallMinLong": 40},
-    "loadingNextlevel": false
+    "canvas": {"wallMaxLong": 90, "wallMinLong": 40}
 };
 
 var PlayerStartXY = {
@@ -82,33 +81,29 @@ var pla2 = canvas.getContext("2d");
 
 var canvasWalls = [];
 
-function makeNewWalls() {
-    for (let i = 0; i < 10 * settings.Level; i++) {
-        let width = 0
-        let height = 0
-    
-        if (eventOrNot(i)) {
-            width = 30;
-            height = 90;
-        } else {
-            width = 90;
-            height = 30;
-        }
-    
-        let x = Math.floor(Math.random() * canvas.width) - width;
-        let y = Math.floor(Math.random() * canvas.height) - height;
-    
-        canvasWalls.push({
-            "wall": canvas.getContext("2d"),
-            "x": x,
-            "y": y,
-            "width": width,
-            "height": height
-        });
-    }
-}
+for (let i = 0; i < 10 * settings.Level; i++) {
+    let width = 0
+    let height = 0
 
-makeNewWalls();
+    if (eventOrNot(i)) {
+        width = 30;
+        height = 90;
+    } else {
+        width = 90;
+        height = 30;
+    }
+
+    let x = Math.floor(Math.random() * canvas.width) - width;
+    let y = Math.floor(Math.random() * canvas.height) - height;
+
+    canvasWalls.push({
+        "wall": canvas.getContext("2d"),
+        "x": x,
+        "y": y,
+        "width": width,
+        "height": height
+    });
+}
 
 var playersInCanvas = {
     "Player1": {"Color": settings.playerColors.Player1, "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": PlayerStartXY.Player1.x, "PosY": PlayerStartXY.Player1.x},
@@ -279,21 +274,15 @@ function draw() {
     }
 }
 
-var levelChanged = 0;
-
 function checkTagged() {
     var player = {"x": playersInCanvas.Player1.PosX, "y": playersInCanvas.Player1.PosY, "height": playersInCanvas.Player1.Height, "width": playersInCanvas.Player1.Width};
     var player2 = {"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY, "height": playersInCanvas.Player2.Height, "width": playersInCanvas.Player2.Width};
     if (isCollide(player, player2)) {
-        if (levelChanged !== settings.Level) {
-            pla1.fillStyle = playersInCanvas.Player1.Color;
-            settings.started = false;
-            settings.playerCollided = true;
-            settings.loadingNextlevel = true;
-            waitingToStart[0] = false;
-            waitingToStart[1]= false;
-            levelChanged = settings.Level;
-        }
+        pla1.fillStyle = playersInCanvas.Player1.Color;
+        settings.playerCollided = true;
+        settings.started = false;
+        waitingToStart[0] = false;
+        waitingToStart[1]= false;
     }
 }
 
@@ -345,26 +334,19 @@ document.addEventListener('keydown', function(event) {
             moveDirection("Down", 2);
         } else if (event.code === "ArrowRight") {
             moveDirection("Right", 2);
-        };
+        }
     } else {
-        console.log("Waiting....")
-        console.log(settings.started)
         if (event.code === 'KeyW') {
             waitingToStart[0] = true;
-            console.log(waitingToStart[0])
         } else if (event.code == 'ArrowUp') {
             waitingToStart[1] = true;
-            console.log(waitingToStart[1])
         }
-        console.log(waitingToStart[0] + " " + waitingToStart[1])
         if (waitingToStart[0] && waitingToStart[1]) {
             settings.started = true;
-            console.log("Settings Started Changed")
-        };
-        console.log(settings.started)
-    };
+        }
+    }
 });
 // End Of Movement
 
-var lastRender = 0;
-window.requestAnimationFrame(loop);
+var lastRender = 0
+window.requestAnimationFrame(loop)
