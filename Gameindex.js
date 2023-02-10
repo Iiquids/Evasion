@@ -155,8 +155,6 @@ function movePlayer() {
                 playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed.y <= 0) {
                 playersInCanvas.Player1.PosY = 0;
-            } else {
-                keysDown.W = false;
             }
         }
         if (keysDown.A == true) {
@@ -164,8 +162,6 @@ function movePlayer() {
                 playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x <= 0) {
                 playersInCanvas.Player1.PosX = 0;
-            } else {
-                keysDown.A = false;
             }
         }
         if (keysDown.S == true) {
@@ -173,8 +169,6 @@ function movePlayer() {
                 playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player1.PosY = canvas.height - settings.PlayerSize[1];
-            } else {
-                keysDown.S = false;
             }
         }
         if (keysDown.D == true) {
@@ -182,8 +176,6 @@ function movePlayer() {
                 playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player1.PosX = canvas.width - settings.PlayerSize[0];
-            } else {
-                keysDown.D = false;
             }
         }
         if (keysDown.Up == true) {
@@ -191,8 +183,6 @@ function movePlayer() {
                 playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player2.PosY - settings.PlayerSpeed.y <= 0) {
                 playersInCanvas.Player2.PosY = 0;
-            } else {
-                keysDown.Up = false;
             }
         }
         if (keysDown.Left == true) {
@@ -200,8 +190,6 @@ function movePlayer() {
                 playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x <= 0) {
                 playersInCanvas.Player2.PosX = 0
-            } else {
-                keysDown.Left = false;
             }
         }
         if (keysDown.Down == true) {
@@ -209,8 +197,6 @@ function movePlayer() {
                 playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed.y;
             } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player2.PosY = canvas.height - settings.PlayerSize[1];
-            } else {
-                keysDown.Down = false;
             }
         }
         if (keysDown.Right == true) {
@@ -218,8 +204,6 @@ function movePlayer() {
                 playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed.x;
             } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player2.PosX = canvas.width - settings.PlayerSize[0];
-            } else {
-                keysDown.Right = false;
             }
         }
     }
@@ -279,6 +263,15 @@ function draw() {
     }
 }
 
+
+function resetPlayerPos() {
+    playersInCanvas.Player1.PosX = PlayerStartXY.Player1.x;
+    playersInCanvas.Player1.PosY = PlayerStartXY.Player1.y;
+    playersInCanvas.Player2.PosX = playersInCanvas.Player2.x;
+    playersInCanvas.Player2.PosY = playersInCanvas.Player2.y;
+}
+
+
 var levelChanged = 0;
 
 function checkTagged() {
@@ -286,16 +279,18 @@ function checkTagged() {
     var player2 = {"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY, "height": playersInCanvas.Player2.Height, "width": playersInCanvas.Player2.Width};
     if (isCollide(player, player2)) {
         if (levelChanged !== settings.Level) {
+            resetPlayerPos()
+            settings.Level = settings.Level + 1;
             pla1.fillStyle = playersInCanvas.Player1.Color;
             settings.started = false;
             settings.playerCollided = true;
             settings.loadingNextlevel = true;
             waitingToStart[0] = false;
             waitingToStart[1]= false;
-            levelChanged = settings.Level;
-        }
-    }
-}
+            levelChanged = levelChanged + 1;
+        };
+    };
+};
 
 function loop(timestamp) {
     var progress = (timestamp - lastRender)
