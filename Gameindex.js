@@ -39,12 +39,12 @@ if (randomGenNumberForKeyTurnOn == 4) {
     keysDown.Right = true;
 }
 
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+canvas.height = 1000;
+canvas.width = 1000;
 
 var settings = {
     "started": false,
-    "PlayerSpeed": {"x" : 5, "y": 5},
+    "PlayerSpeed": {"Player1": {"x" : 5, "y": 5}, "Player2": {"x" : 5, "y": 5}},
     "PlayerSize": [20, 20],
     "CoinSize": [25, 25],
     "Players": 1,
@@ -53,19 +53,160 @@ var settings = {
     "PlayerTurn": Math.floor(Math.random() * 2) + 1,
     "playerCollided": false,
     "Level": 1,
-    "canvas": {"wallMaxLong": 90, "wallMinLong": 40},
     "loadingNextlevel": false
 };
 
 var PlayerStartXY = {
-    "Player1": {"x": settings.PlayerSize[0] * 3, "y": canvas.height / 2},
-    "Player2": {"x": canvas.width - settings.PlayerSize[0] * 3, "y": canvas.height / 2}
+    "Player1": {"x": (canvas.width / 40) * 2, "y": (canvas.height / 40) * 20},
+    "Player2": {"x": (canvas.width / 40) * 37, "y": (canvas.height / 40) * 20}
 };
 
 if (settings.PlayerTurn == 1) {
     settings.playerColors.Player1 = settings.PlayerAvaColors.Robber
 } else {
     settings.playerColors.Player2 = settings.PlayerAvaColors.Robber
+};
+
+// width n height pixel = 40
+//ffdd00 = COins
+
+walls = [ // Defining main walls
+
+    [ // Defining Lvl
+
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ],
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+    ],
+    [
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+    ]
+];
+
+function getWallTemplate(lvl) {
+    return walls[lvl-1][Math.floor(Math.random()* walls[lvl-1].length)];
 };
 
 function eventOrNot(n){
@@ -80,41 +221,60 @@ function eventOrNot(n){
 var pla1 = canvas.getContext("2d");
 var pla2 = canvas.getContext("2d");
 
-var canvasWalls = [];
-
-function makeNewWalls() {
-    for (let i = 0; i < 10 * settings.Level; i++) {
-        let width = 0
-        let height = 0
-    
-        if (eventOrNot(i)) {
-            width = 30;
-            height = 90;
-        } else {
-            width = 90;
-            height = 30;
-        }
-    
-        let x = Math.floor(Math.random() * canvas.width) - width;
-        let y = Math.floor(Math.random() * canvas.height) - height;
-    
-        canvasWalls.push({
-            "wall": canvas.getContext("2d"),
-            "x": x,
-            "y": y,
-            "width": width,
-            "height": height
-        });
-    }
-}
-
-makeNewWalls();
-
 var playersInCanvas = {
     "Player1": {"Color": settings.playerColors.Player1, "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": PlayerStartXY.Player1.x, "PosY": PlayerStartXY.Player1.x},
     "Player2": {"Color": settings.playerColors.Player2, "Width": settings.PlayerSize[0], "Height": settings.PlayerSize[1], "PosX": PlayerStartXY.Player2.x, "PosY": PlayerStartXY.Player2.y}
 };
 
+resetPlayerPos();
+
+var canvasWalls = [];
+var canvasCoins = [];
+
+function makeNewWalls() {
+    let wallTemplate = getWallTemplate(settings.Level);
+    let size = 25;
+    let xHolder = 0;
+    let yHolder = 0;
+
+    for (let rowy = 0; rowy < wallTemplate.length; rowy++) {
+        for (let rowx = 0; rowx < wallTemplate[rowy].length; rowx ++) {
+            if (wallTemplate[rowy][rowx] == 1) {
+                let xplace = xHolder;
+                let yplace = yHolder;
+
+                wallArray = {
+                    "wall": canvas.getContext("2d"),
+                    "x": xplace,
+                    "y": yplace,
+                    "width": size,
+                    "height": size
+                };
+
+                canvasWalls.push(wallArray);
+            } 
+            if (wallTemplate[rowy][rowx] == 2) {
+                let xplace = xHolder;
+                let yplace = yHolder;
+
+                coinArray = {
+                    "coin": canvas.getContext("2d"),
+                    "x": xplace,
+                    "y": yplace,
+                    "width": size,
+                    "height": size
+                };
+
+                canvasCoins.push(coinArray);
+            }
+            xHolder = xHolder + size;
+        }
+        xHolder = 0;
+        yHolder = yHolder + size;
+    }
+};
+
+makeNewWalls();
 
 var state = {
     x: (width / 2),
@@ -151,63 +311,70 @@ var widthDelay = canvas.width - canvas.height;
 function movePlayer() {
     if (settings.started == true) {
         if (keysDown.W == true) {
-            if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed.y) >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY - settings.PlayerSpeed.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
-                playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed.y;
-            } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed.y <= 0) {
+            if ((playersInCanvas.Player1.PosY - settings.PlayerSpeed.Player1.y) >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY - settings.PlayerSpeed.Player1.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
+                playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY - settings.PlayerSpeed.Player1.y;
+            } else if (playersInCanvas.Player1.PosY - settings.PlayerSpeed.Player1.y <= 0) {
                 playersInCanvas.Player1.PosY = 0;
             }
         }
         if (keysDown.A == true) {
-            if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX - settings.PlayerSpeed.x + settings.PlayerSpeed.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
-                playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed.x;
-            } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.x <= 0) {
+            if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.Player1.x >= 0 && wallCollide({"x": playersInCanvas.Player1.PosX - settings.PlayerSpeed.Player1.x + settings.PlayerSpeed.Player1.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
+                playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX - settings.PlayerSpeed.Player1.x;
+            } else if (playersInCanvas.Player1.PosX - settings.PlayerSpeed.Player1.x <= 0) {
                 playersInCanvas.Player1.PosX = 0;
             }
         }
         if (keysDown.S == true) {
-            if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed.y) <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY + settings.PlayerSpeed.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
-                playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed.y;
-            } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
+            if ((playersInCanvas.Player1.PosY + settings.PlayerSpeed.Player1.y) <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player1.PosX, "y": (playersInCanvas.Player1.PosY + settings.PlayerSpeed.Player1.y), "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
+                playersInCanvas.Player1.PosY = playersInCanvas.Player1.PosY + settings.PlayerSpeed.Player1.y;
+            } else if (playersInCanvas.Player1.PosY + settings.PlayerSpeed.Player1.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player1.PosY = canvas.height - settings.PlayerSize[1];
             }
         }
         if (keysDown.D == true) {
-            if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player1.PosX + settings.PlayerSpeed.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
-                playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed.x;
+            if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.Player1.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player1.PosX + settings.PlayerSpeed.Player1.x, "y": playersInCanvas.Player1.PosY, "width": playersInCanvas.Player1.Width, "height": playersInCanvas.Player1.Height})) {
+                playersInCanvas.Player1.PosX = playersInCanvas.Player1.PosX + settings.PlayerSpeed.Player1.x;
             } else if (playersInCanvas.Player1.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player1.PosX = canvas.width - settings.PlayerSize[0];
             }
         }
         if (keysDown.Up == true) {
-            if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed.y) >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX, "y": (playersInCanvas.Player2.PosY - settings.PlayerSpeed.y), "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
-                playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed.y;
-            } else if (playersInCanvas.Player2.PosY - settings.PlayerSpeed.y <= 0) {
+            if ((playersInCanvas.Player2.PosY - settings.PlayerSpeed.Player2.y) >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX, "y": (playersInCanvas.Player2.PosY - settings.PlayerSpeed.Player2.y), "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
+                playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY - settings.PlayerSpeed.Player2.y;
+            } else if (playersInCanvas.Player2.PosY - settings.PlayerSpeed.Player2.y <= 0) {
                 playersInCanvas.Player2.PosY = 0;
             }
         }
         if (keysDown.Left == true) {
-            if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX - settings.PlayerSpeed.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
-                playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed.x;
+            if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.Player2.x >= 0 && wallCollide({"x": playersInCanvas.Player2.PosX - settings.PlayerSpeed.Player2.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
+                playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX - settings.PlayerSpeed.Player2.x;
             } else if (playersInCanvas.Player2.PosX - settings.PlayerSpeed.x <= 0) {
                 playersInCanvas.Player2.PosX = 0
             }
         }
         if (keysDown.Down == true) {
-            if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY + settings.PlayerSpeed.y, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
-                playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed.y;
-            } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.y >= canvas.height - settings.PlayerSize[1]) {
+            if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.Player2.y <= canvas.height - settings.PlayerSize[1] && wallCollide({"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY + settings.PlayerSpeed.Player2.y, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
+                playersInCanvas.Player2.PosY = playersInCanvas.Player2.PosY + settings.PlayerSpeed.Player2.y;
+            } else if (playersInCanvas.Player2.PosY + settings.PlayerSpeed.Player2.y >= canvas.height - settings.PlayerSize[1]) {
                 playersInCanvas.Player2.PosY = canvas.height - settings.PlayerSize[1];
             }
         }
         if (keysDown.Right == true) {
-            if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player2.PosX + settings.PlayerSpeed.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
-                playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed.x;
+            if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.Player2.x <= canvas.width - settings.PlayerSize[0] && wallCollide({"x": playersInCanvas.Player2.PosX + settings.PlayerSpeed.Player2.x, "y": playersInCanvas.Player2.PosY, "width": playersInCanvas.Player2.Width, "height": playersInCanvas.Player2.Height})) {
+                playersInCanvas.Player2.PosX = playersInCanvas.Player2.PosX + settings.PlayerSpeed.Player2.x;
             } else if (playersInCanvas.Player2.PosX + settings.PlayerSpeed.x >= canvas.width - settings.PlayerSize[0]) {
                 playersInCanvas.Player2.PosX = canvas.width - settings.PlayerSize[0];
             }
         }
     }
 }
+
+var backgroundCanvas = canvas.getContext('2d');
+var letterCanvas = canvas.getContext('2d');
+var bcImg = new Image();
+var ltImg = new Image();
+bcImg.src = 'Images/Background.png';
+ltImg.src = 'Images/PWAATS.png';
 
 function loadPlayers() { // Loads and draws Players.
     // clearRect First else dumbass thing won't work
@@ -216,10 +383,23 @@ function loadPlayers() { // Loads and draws Players.
     pla2.clearRect(0, 0, canvas.width, canvas.height);
     pla1.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < canvasWalls.length; i++) {
+    for (let i = 0; i < canvasWalls.length; i++) { // Walls
         // Draw
         var ctx = canvasWalls[i].wall;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+    for (let i = 0; i < canvasCoins.length; i++) {
+        // Draw
+        var ctx = canvasCoins[i].coin;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+    for (let i = 0; i < canvasCoins.length; i++) {
+        // Draw
+        var ctx = canvasCoins[i].coin;
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(canvasCoins[i].x, canvasCoins[i].y, canvasCoins[i].width, canvasCoins[i].height);
     };
 
     for (let i = 0; i < canvasWalls.length; i++) {
@@ -227,7 +407,6 @@ function loadPlayers() { // Loads and draws Players.
         var ctx = canvasWalls[i].wall;
         ctx.fillStyle = "white";
         ctx.fillRect(canvasWalls[i].x, canvasWalls[i].y, canvasWalls[i].width, canvasWalls[i].height);
-
     };
 
     // Colors is soo fucking shit, LIKE LOOK AT THIS... PLAYER2 IS USING PLAYER1'S COLOR AND IT USES OPPISITE... Another thing Bryan coded that shit.
@@ -249,12 +428,14 @@ function draw() {
             startText.fillStyle = "black";
             let text = "Press W and Arrow Up To Start"
             let textWidth = startText.measureText(text).width;
-            startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
+            //startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
+            backgroundCanvas.drawImage(bcImg, 0, 0, canvas.width, canvas.height);
+            letterCanvas.drawImage(ltImg, (canvas.width/2) - (textWidth / 2), canvas.height/4);
         } else {
             startText.fillStyle = "black";
             let text = "Player " + settings.PlayerTurn + " Won!\nPress W and Arrow Up To Restart.";
             let textWidth = startText.measureText(text).width;
-            startText.fillText(text , (canvas.width/2) - (textWidth / 2), canvas.height/3);
+            startText.fillText(text , (canvas.width/2) - (ltImg.width / 2), canvas.height/3);
         }
     } else {
         if (settings.playerCollided == false) {
@@ -267,28 +448,27 @@ function draw() {
 function resetPlayerPos() {
     playersInCanvas.Player1.PosX = PlayerStartXY.Player1.x;
     playersInCanvas.Player1.PosY = PlayerStartXY.Player1.y;
-    playersInCanvas.Player2.PosX = playersInCanvas.Player2.x;
-    playersInCanvas.Player2.PosY = playersInCanvas.Player2.y;
+    playersInCanvas.Player2.PosX = PlayerStartXY.Player2.x;
+    playersInCanvas.Player2.PosY = PlayerStartXY.Player2.y;
 }
 
 
-var levelChanged = 0;
+//var levelChanged = 2;
 
 function checkTagged() {
     var player = {"x": playersInCanvas.Player1.PosX, "y": playersInCanvas.Player1.PosY, "height": playersInCanvas.Player1.Height, "width": playersInCanvas.Player1.Width};
     var player2 = {"x": playersInCanvas.Player2.PosX, "y": playersInCanvas.Player2.PosY, "height": playersInCanvas.Player2.Height, "width": playersInCanvas.Player2.Width};
     if (isCollide(player, player2)) {
-        if (levelChanged !== settings.Level) {
-            resetPlayerPos()
-            settings.Level = settings.Level + 1;
-            pla1.fillStyle = playersInCanvas.Player1.Color;
-            settings.started = false;
-            settings.playerCollided = true;
-            settings.loadingNextlevel = true;
-            waitingToStart[0] = false;
-            waitingToStart[1]= false;
-            levelChanged = levelChanged + 1;
+        settings.Level = settings.Level + 1;
+        resetPlayerPos();
+        while(canvasWalls.length > 0) {
+            canvasWalls.pop();
         };
+        makeNewWalls();
+        waitingToStart[0] = false;
+        waitingToStart[1] = false; 
+        settings.started = false;
+        playerCollided = true;
     };
 };
 
@@ -342,21 +522,14 @@ document.addEventListener('keydown', function(event) {
             moveDirection("Right", 2);
         };
     } else {
-        console.log("Waiting....")
-        console.log(settings.started)
         if (event.code === 'KeyW') {
             waitingToStart[0] = true;
-            console.log(waitingToStart[0])
         } else if (event.code == 'ArrowUp') {
             waitingToStart[1] = true;
-            console.log(waitingToStart[1])
         }
-        console.log(waitingToStart[0] + " " + waitingToStart[1])
         if (waitingToStart[0] && waitingToStart[1]) {
             settings.started = true;
-            console.log("Settings Started Changed")
         };
-        console.log(settings.started)
     };
 });
 // End Of Movement
